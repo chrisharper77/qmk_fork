@@ -218,7 +218,7 @@ extern keyboard_config_t keyboard_config;
     L20,L21,L22,L23,L24,L25,                   R21,R22,R23,R24,R25,R26,  \
     L30,L31,L32,L33,L34,L35,L36,           R30,R31,R32,R33,R34,R35,R36,  \
     L40,L41,L42,L43,L44,                           R42,R43,R44,R45,R46,  \
-                            L55,L56,   R50,R51,                          \
+                            L56,L55,   R50,R51,                          \
                                 L54,   R52,                              \
                         L51,L52,L53,   R55,R54,R53 )                     \
                                           \
