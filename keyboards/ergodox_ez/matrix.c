@@ -2,7 +2,6 @@
 
 
 Copyright 2013 Oleg Kostyuk <cub.uanic@gmail.com>
-
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 2 of the License, or
@@ -198,11 +197,20 @@ static void init_cols(void) {
 
   // init on teensy
   // Input with pull-up(DDR:0, PORT:1)
-  DDRF &= ~(1 << 7 | 1 << 6 | 1 << 5 | 1 << 4 | 1 << 1 | 1 << 0);
-  PORTF |= (1 << 7 | 1 << 6 | 1 << 5 | 1 << 4 | 1 << 1 | 1 << 0);
+  //DDRF &= ~(1 << 7 | 1 << 6 | 1 << 5 | 1 << 4 | 1 << 1 | 1 << 0);
+  //PORTF |= (1 << 7 | 1 << 6 | 1 << 5 | 1 << 4 | 1 << 1 | 1 << 0);
+
+  //CJH We use PB1,2,3 D2,3 C6for our rows on the teensy
+  DDRC &= ~(1 << 6 );
+  PORTC |= (1 << 6 );
+  DDRD &= ~(1 << 2 | 1 << 3);
+  PORTD |= (1 << 2 | 1 << 3);
+  DDRB &= ~(1 << 1 | 1 << 2 | 1 << 3);
+  PORTB |= (1 << 1 | 1 << 2 | 1 << 3);
 }
 
 static matrix_row_t read_cols(uint8_t row) {
+  uint8_t row0,row1,row2,row3,row4,row5 = 0;
   if (row < 7) {
     if (mcp23018_status) {  // if there was an error
       return 0;
@@ -221,13 +229,27 @@ static matrix_row_t read_cols(uint8_t row) {
       return data;
     }
   } else {
-    /* read from teensy
-     * bitmask is 0b11110011, but we want those all
-     * in the lower six bits.
-     * we'll return 1s for the top two, but that's harmless.
-     */
+    ///* read from teensy
+    // * bitmask is 0b11110011, but we want those all
+    // * in the lower six bits.
+    // * we'll return 1s for the top two, but that's harmless.
+    // */
 
-    return ~((PINF & 0x03) | ((PINF & 0xF0) >> 2));
+    //return ~((PINF & 0x03) | ((PINF & 0xF0) >> 2));
+
+      /* read from teensy
+       * from row0 to 5 the pins are
+       * B1, B2, B3, D2, D3, C6
+       */
+      // Get a value of either 0x00 or 0x01 for each so we can shift where we need it in the return
+      row0 = ( PINB & ( 1 << 1) ) >> 1;
+      row1 = ( PINB & ( 1 << 2) ) >> 2;
+      row2 = ( PINB & ( 1 << 3) ) >> 3;
+      row3 = ( PIND & ( 1 << 2) ) >> 2;
+      row4 = ( PIND & ( 1 << 3) ) >> 3;
+      row5 = ( PINC & ( 1 << 6) ) >> 6;
+
+      return ~( (row5 << 5) | (row4 << 4) | (row3 << 3) | (row2 << 2) | (row1 << 1) | (row0 << 0));
   }
 }
 
@@ -248,12 +270,20 @@ static void unselect_rows(void) {
 
   // unselect on teensy
   // Hi-Z(DDR:0, PORT:0) to unselect
-  DDRB &= ~(1 << 0 | 1 << 1 | 1 << 2 | 1 << 3);
-  PORTB &= ~(1 << 0 | 1 << 1 | 1 << 2 | 1 << 3);
-  DDRD &= ~(1 << 2 | 1 << 3);
-  PORTD &= ~(1 << 2 | 1 << 3);
-  DDRC &= ~(1 << 6);
-  PORTC &= ~(1 << 6);
+  //DDRB &= ~(1 << 0 | 1 << 1 | 1 << 2 | 1 << 3);
+  //PORTB &= ~(1 << 0 | 1 << 1 | 1 << 2 | 1 << 3);
+  //DDRD &= ~(1 << 2 | 1 << 3);
+  //PORTD &= ~(1 << 2 | 1 << 3);
+  //DDRC &= ~(1 << 6);
+  //PORTC &= ~(1 << 6);
+
+  // CJH: I swapped rows and columns when soldering
+  // Input with pull-up(DDR:0, PORT:1)
+  DDRF &= ~(1 << 7 | 1 << 6 | 1 << 5 | 1 << 4 | 1 << 1 );
+  PORTF |= (1 << 7 | 1 << 6 | 1 << 5 | 1 << 4 | 1 << 1 );
+  DDRD &= ~(1 << 7 | 1 << 4 );
+  PORTD |= (1 << 7 | 1 << 4 );
+
 }
 
 static void select_row(uint8_t row) {
@@ -278,32 +308,46 @@ static void select_row(uint8_t row) {
     // Output low(DDR:1, PORT:0) to select
     switch (row) {
       case 7:
-        DDRB |= (1 << 0);
-        PORTB &= ~(1 << 0);
+        //DDRB |= (1 << 0);
+        //PORTB &= ~(1 << 0);
+        DDRD |= (1 << 4);
+        PORTD &= ~(1 << 4);
         break;
       case 8:
-        DDRB |= (1 << 1);
-        PORTB &= ~(1 << 1);
+        //DDRB |= (1 << 1);
+        //PORTB &= ~(1 << 1);
+        DDRD |= (1 << 7);
+        PORTD &= ~(1 << 7);
         break;
       case 9:
-        DDRB |= (1 << 2);
-        PORTB &= ~(1 << 2);
+        //DDRB |= (1 << 2);
+        //PORTB &= ~(1 << 2);
+        DDRF |= (1 << 1);
+        PORTF &= ~(1 << 1);
         break;
       case 10:
-        DDRB |= (1 << 3);
-        PORTB &= ~(1 << 3);
+        //DDRB |= (1 << 3);
+        //PORTB &= ~(1 << 3);
+        DDRF |= (1 << 4);
+        PORTF &= ~(1 << 4);
         break;
       case 11:
-        DDRD |= (1 << 2);
-        PORTD &= ~(1 << 2);
+        //DDRD |= (1 << 2);
+        //PORTD &= ~(1 << 2);
+        DDRF |= (1 << 5);
+        PORTF &= ~(1 << 5);
         break;
       case 12:
-        DDRD |= (1 << 3);
-        PORTD &= ~(1 << 3);
+        //DDRD |= (1 << 3);
+        //PORTD &= ~(1 << 3);
+        DDRF |= (1 << 6);
+        PORTF &= ~(1 << 6);
         break;
       case 13:
-        DDRC |= (1 << 6);
-        PORTC &= ~(1 << 6);
+        //DDRC |= (1 << 6);
+        //PORTC &= ~(1 << 6);
+        DDRF |= (1 << 7);
+        PORTF &= ~(1 << 7);
         break;
     }
   }

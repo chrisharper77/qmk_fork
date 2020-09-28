@@ -37,12 +37,13 @@ void matrix_init_kb(void) {
     PORTB &= ~(1<<4);  // set B(4) internal pull-up disabled
 
     // unused pins - C7, D4, D5, D7, E6
+    // CJH: We are using D4 as column 7..., D7 as column 8 this is taken care of in matrix.c 
     // set as input with internal pull-up enabled
     DDRC  &= ~(1<<7);
-    DDRD  &= ~(1<<5 | 1<<4);
+    DDRD  &= ~(1<<5 );
     DDRE  &= ~(1<<6);
     PORTC |=  (1<<7);
-    PORTD |=  (1<<5 | 1<<4);
+    PORTD |=  (1<<5 );
     PORTE |=  (1<<6);
 
     keyboard_config.raw = eeconfig_read_kb();

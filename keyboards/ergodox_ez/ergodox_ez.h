@@ -131,33 +131,33 @@ extern keyboard_config_t keyboard_config;
  */
 #define LAYOUT_ergodox(                                         \
                                                                 \
-    k00,k01,k02,k03,k04,k05,k06,                                \
-    k10,k11,k12,k13,k14,k15,k16,                                \
-    k20,k21,k22,k23,k24,k25,                                    \
-    k30,k31,k32,k33,k34,k35,k36,                                \
-    k40,k41,k42,k43,k44,                                        \
-                            k55,k56,                            \
-                                k54,                            \
-                        k53,k52,k51,                            \
+    k06,k05,k04,k03,k02,k01,k00,                                \
+    k16,k15,k14,k13,k12,k11,k10,                                \
+    k26,k25,k24,k23,k22,k21,                                    \
+    k36,k35,k34,k33,k32,k31,k30,                                \
+    k46,k45,k44,k43,k42,                                        \
+                            k50,k51,                            \
+                                k52,                            \
+                        k55,k54,k53,                            \
                                                                 \
         k07,k08,k09,k0A,k0B,k0C,k0D,                            \
         k17,k18,k19,k1A,k1B,k1C,k1D,                            \
             k28,k29,k2A,k2B,k2C,k2D,                            \
         k37,k38,k39,k3A,k3B,k3C,k3D,                            \
                 k49,k4A,k4B,k4C,k4D,                            \
-    k57,k58,                                                    \
+    k58,k57,                                                    \
     k59,                                                        \
-    k5C,k5B,k5A )                                               \
+    k5B,k5A,k5C )                                               \
                                                                 \
    /* matrix positions */                                       \
    {                                                            \
-    { k00, k10, k20, k30, k40, KC_NO },   \
-    { k01, k11, k21, k31, k41, k51 },   \
-    { k02, k12, k22, k32, k42, k52 },   \
-    { k03, k13, k23, k33, k43, k53 },   \
+    { k06, k16, k26, k36, k46, KC_NO },   \
+    { k05, k15, k25, k35, k45, k55 },   \
     { k04, k14, k24, k34, k44, k54 },   \
-    { k05, k15, k25, k35, KC_NO, k55 },   \
-    { k06, k16, KC_NO, k36, KC_NO, k56 },   \
+    { k03, k13, k23, k33, k43, k53 },   \
+    { k02, k12, k22, k32, k42, k52 },   \
+    { k01, k11, k21, k31, KC_NO, k51 },   \
+    { k00, k10, KC_NO, k30, KC_NO, k50 },   \
                                                                  \
     { k07, k17, KC_NO, k37,KC_NO, k57 },   \
     { k08, k18, k28, k38,KC_NO, k58 },   \
@@ -220,17 +220,17 @@ extern keyboard_config_t keyboard_config;
     L40,L41,L42,L43,L44,                           R42,R43,R44,R45,R46,  \
                             L55,L56,   R50,R51,                          \
                                 L54,   R52,                              \
-                        L53,L52,L51,   R55,R54,R53 )                     \
+                        L51,L52,L53,   R55,R54,R53 )                     \
                                           \
    /* matrix positions */                 \
     {                                     \
-    { L00, L10, L20, L30, L40, KC_NO },   \
-    { L01, L11, L21, L31, L41, L51 },     \
-    { L02, L12, L22, L32, L42, L52 },     \
-    { L03, L13, L23, L33, L43, L53 },     \
+    { L06, L16, KC_NO, L36, KC_NO, L56 },   \
+    { L05, L15, L25, L35, KC_NO, L55 },     \
     { L04, L14, L24, L34, L44, L54 },     \
-    { L05, L15, L25, L35, KC_NO, L55 },   \
-    { L06, L16, KC_NO, L36, KC_NO, L56 }, \
+    { L03, L13, L23, L33, L43, L53 },     \
+    { L02, L12, L22, L32, L42, L52 },     \
+    { L01, L11, L21, L31, L41, L51 },   \
+    { L00, L10, L20, L30, L40, KC_NO }, \
                                           \
     { R00, R10, KC_NO, R30,KC_NO, R50 },  \
     { R01, R11, R21, R31,KC_NO, R51 },    \
