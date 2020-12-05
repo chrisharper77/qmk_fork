@@ -220,7 +220,7 @@ extern keyboard_config_t keyboard_config;
     L40,L41,L42,L43,L44,                           R42,R43,R44,R45,R46,  \
                             L56,L55,   R50,R51,                          \
                                 L54,   R52,                              \
-                        L51,L52,L53,   R53,R55,R54 )                     \
+                        L51,L52,L53,   R54,R53,R55 )                     \
                                           \
    /* matrix positions */                 \
     {                                     \
